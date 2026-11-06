@@ -1,5 +1,16 @@
 # Control Expert MCP Server
 
+> **Fork notice** — This repository is a fork of
+> [apexsotjo-blip/control-expert-mcp](https://github.com/apexsotjo-blip/control-expert-mcp).
+> All credit for the original server goes to its author. This fork only adds
+> small compatibility fixes, validated on **EcoStruxure Control Expert V15.0**
+> (M340 BMX P34 2020):
+>
+> - Pin the MCP Python SDK to `mcp<2` — `mcp` 2.x renamed `FastMCP`, which
+>   breaks the server at import time.
+> - Detect the PLC simulator (`sim.exe`) of the newest installed Control Expert
+>   version instead of the hard-coded 14.0 path (override with `CE_MCP_SIM_EXE`).
+
 An [MCP](https://modelcontextprotocol.io/) server that connects AI agents (Claude Desktop, Claude Code, VS Code Copilot, or any MCP client) to a local **EcoStruxure Control Expert** (formerly **Unity Pro**) installation — so the AI can **read, edit, and create PLC projects from scratch**.
 
 Inspired by [tiaportal-mcp](https://github.com/heilingbrunner/tiaportal-mcp) for Siemens TIA Portal. Where TIA Portal exposes the Openness API, Control Expert exposes the **Unity Developer's Edition (UDE) COM automation server** (`PSBroker.PServerBroker`) — this server drives it through `pywin32` and exposes it as MCP tools over stdio.
@@ -24,7 +35,7 @@ AI agent (Claude, Copilot, ...) ──MCP/stdio──> control-expert-mcp ──
 
 ## Requirements
 
-- Windows with **EcoStruxure Control Expert** (or Unity Pro) installed and licensed — tested against **Control Expert 14.0**, but any version that registers `PSBroker.PServerBroker.1` should work (the UDE automation server ships with Control Expert itself; the separate UDE package is only needed for documentation)
+- Windows with **EcoStruxure Control Expert** (or Unity Pro) installed and licensed — tested against **Control Expert 14.0** (and **15.0** in this fork), but any version that registers `PSBroker.PServerBroker.1` should work (the UDE automation server ships with Control Expert itself; the separate UDE package is only needed for documentation)
 - **Python 3.10+** with `pywin32`
 - The server must run **on the same machine** as Control Expert (DCOM remoting is possible but not configured here)
 

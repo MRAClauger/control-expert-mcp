@@ -2784,10 +2784,27 @@ class ControlExpertBridge:
 
     # ----------------------------------------------------------- simulator
 
-    SIM_EXE = (
-        r"C:\Program Files (x86)\Schneider Electric\Control Expert 14.0"
-        r"\PLC_Simulator\sim.exe"
-    )
+    # Pick the simulator of the newest installed Control Expert (override with
+    # CE_MCP_SIM_EXE) instead of a hard-coded 14.0 path.
+    @staticmethod
+    def _find_sim_exe() -> str:
+        env = os.environ.get("CE_MCP_SIM_EXE")
+        if env:
+            return env
+        import glob as _glob
+        cands = _glob.glob(
+            r"C:\Program Files (x86)\Schneider Electric\Control Expert *"
+            r"\PLC_Simulator\sim.exe"
+        )
+        def _ver(p: str):
+            m = re.search(r"Control Expert ([\d.]+)", p)
+            return tuple(int(x) for x in m.group(1).split(".")) if m else ()
+        return max(cands, key=_ver) if cands else (
+            r"C:\Program Files (x86)\Schneider Electric\Control Expert 15.0"
+            r"\PLC_Simulator\sim.exe"
+        )
+
+    SIM_EXE = _find_sim_exe.__func__()
 
     def start_simulator(self, enforce_security: bool) -> dict:
         return self._run(self._do_start_simulator, enforce_security)

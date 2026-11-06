@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 dependencies = [
-    "mcp>=1.2.0",
+    "mcp>=1.2.0,<2",
     "pywin32>=306; sys_platform == 'win32'",
     "pymodbus>=3.5,<4",
     "lxml>=5.0",
